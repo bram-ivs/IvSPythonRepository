@@ -5,29 +5,6 @@
 
   This will clone all repository files in the ~/python/ivs folder. Be aware, however, that only the python scripts and the documentation are being cloned, not the (numerous and sometimes huge) datafiles that come along with it, containing, for example, limbdarkening coefficients.
     
-* Updating your own clone of the IvS python repository to the most recent version can be done with
-
-    $ cd ivs
-    $ git pull
-
-* The IvS Python repository contains mostly python routines. Some of the time-critical
-functions, however, are written in fortran. To compile them you can run
-
-    $ python config.py compile
-
-If you want to specify your own fortran compiler you can do so with
-
-    $ python config.py compile f77
-
-Note: sometimes the compilation process fails. If so, try to compile spectra/pyrotin4.f manually, and then retry the automatic compilation:
-    
-    $ cd spectra/
-    $ f2py --fcompiler=gfortran -c pyrotin4.f -m pyrotin4
-    $ cd ../
-    $ python config.py compile
-
-* In the config file you may also change the paths where the data catalogs (variable: data_dir) can be found, if you are not using the default locations. 
-
 * Make sure that your python path points to the ivs folder, so that you can simply import
 using, for example:
 
@@ -38,6 +15,31 @@ using, for example:
     export PYTHONPATH=/home/YOURNAME/python:$PYTHONPATH
 
 Warning: don't put ~/python/ivs in your Python path, but just ~/python.
+
+* Updating your own clone of the IvS python repository to the most recent version can be done with
+
+    $ cd ivs
+    $ git pull
+
+* The IvS Python repository contains mostly python routines. Some of the time-critical
+functions, however, are written in fortran. To compile them you can run
+
+    $ python ivs/config.py compile
+
+If you want to specify your own fortran compiler you can do so with
+
+    $ python ivs/config.py compile f77
+
+Warning: always compile the modules from the parent directory.
+
+Note: sometimes the compilation process fails. If so, try to compile spectra/pyrotin4.f manually, and then retry the automatic compilation:
+    
+    $ cd spectra/
+    $ f2py --fcompiler=gfortran -c pyrotin4.f -m pyrotin4
+    $ cd ../
+    $ python config.py compile
+
+* In the config file you may also change the paths where the data catalogs (variable: data_dir) can be found, if you are not using the default locations. 
 
 
 * To generate the documentation, simply run the script
@@ -66,3 +68,6 @@ Encountered errors and their solutions:
 numpy.distutils.fcompiler.CompilerNotFound: gnu95: f90 nor f77
 A: Install gfortran.
 
+2. Q: Python print weird IO errors.
+A: Never set the Python path directly to the source code. Always set it to the parent directory. 
+A: Never run code from inside the IvS source code. Put your own source code in a different directory.

@@ -96,7 +96,9 @@ if __name__=="__main__":
             answer = 'y'
             for name in to_install:
                 #-- break up fortran filepath in file and directory name
-                direc,pname = os.path.dirname(name),os.path.basename(name)
+                direc,pname = "{}/{}".format(os.path.dirname(os.path.realpath(__file__)), 
+                        os.path.dirname(name)),os.path.basename(name)
+
                 if not os.path.isfile(name+'.so'):
                     #-- build the command to compile the program and log it to
                     #   the user
@@ -110,7 +112,8 @@ if __name__=="__main__":
                     p = subprocess.check_output(cmd,shell=True)#,stdout=devnull)
                     #-- check if compilation went fine
                     if os.path.isfile(pname+'.so'):
-                        shutil.move(pname+'.so',name+'.so')
+                        print pname+'.so',os.path.join(direc, pname)+'.so'
+                        shutil.move(pname+'.so',os.path.join(direc, pname)+'.so')
                         logger.info('... succeeded')
                     else:
                         logger.error('FAILED')
